@@ -99,28 +99,28 @@ class AllRecipes(AbstractScraper):
 
 
     def rating(self):
-        # try:
-        # container = self.soup.find('ul', {'class' : 'rating_list'})
-        ratings = [0, 0, 0, 0, 0]
-        rating_elmnts = self.soup.find_all('li', {'class' : 'rating'})
-        number_rgx = re.compile(r'\d+\.*d*')
-        for elmnt in rating_elmnts:
-            idx = elmnt.find('span', {'class' : 'rating-stars'}).text.strip()
-            idx = int(number_rgx.search(idx).group(0))
-            count = elmnt.find('span', {'class' : 'rating-count'}).text.strip()
-            count = int(number_rgx.search(count).group(0))
-            ratings[idx-1] = count
+        try:
+            container = self.soup.find('ul', {'class' : 'rating_list'})
+            ratings = [0, 0, 0, 0, 0]
+            rating_elmnts = self.soup.find_all('li', {'class' : 'rating'})
+            number_rgx = re.compile(r'\d+\.*d*')
+            for elmnt in rating_elmnts:
+                idx = elmnt.find('span', {'class' : 'rating-stars'}).text.strip()
+                idx = int(number_rgx.search(idx).group(0))
+                count = elmnt.find('span', {'class' : 'rating-count'}).text.strip()
+                count = int(number_rgx.search(count).group(0))
+                ratings[idx-1] = count
 
-        sum = 0
-        total_count = 0
-        for i, count in enumerate(ratings):
-            sum += (i+1) * count
-            total_count += count
+            sum = 0
+            total_count = 0
+            for i, count in enumerate(ratings):
+                sum += (i+1) * count
+                total_count += count
 
-        return float(sum / total_count) if total_count > 0 else 0
+            return float(sum / total_count) if total_count > 0 else 0
 
-        # except:
-        #     return None
+        except:
+            return None
 
            
     def _time(self, kind: str) -> Optional[int]:
