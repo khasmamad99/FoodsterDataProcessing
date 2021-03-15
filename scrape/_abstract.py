@@ -8,7 +8,7 @@ class AbstractScraper:
 
     def __init__(self, url):
         page_data = requests.get(url).content
-        self.soup = BeautifulSoup(page_data, "html_parser")
+        self.soup = BeautifulSoup(page_data, "html5lib")
         self.url = url
 
     def title(self) -> Optional[str]:
@@ -31,9 +31,6 @@ class AbstractScraper:
         raise NotImplementedError("This should be implemented.")
 
     def image_url(self) -> Optional[str]:
-        raise NotImplementedError("This should be implemented.")
-
-    def image_b64(self) -> Optional[str]:
         raise NotImplementedError("This should be implemented.")
 
     def nutrients(self) -> Optional[Dict[str, Any]]:
