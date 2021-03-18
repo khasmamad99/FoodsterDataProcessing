@@ -59,10 +59,18 @@ class AllRecipes(AbstractScraper):
                                  .strip()[:-1].split(';')[:4]
 
             nutr_dict = dict()
-            number_rgx = re.compile(r'\d+\.*d*')
+            rgx = re.compile('(\d+(?:\.\d+)?)([a-zA-Z]+)?')
             for i, nutr_name in enumerate(['calories', 'protein', 'carbs', 'fat']):
-                amount = float(number_rgx.search(nutrients[i]).group(0))
-                nutr_dict[nutr_name] = amount
+                content = dict()
+                content['unit'] = None
+                matches = rgx.findall(nutrients[i])[0]
+                if len(matches) > 1:
+                    quantity, unit = matches
+                    content['unit'] = unit
+                else:
+                    quantity = matches[0]
+                content['quantity'] = quantity
+                nutr_dict[nutr_name] = content
 
             return nutr_dict
 
@@ -117,7 +125,10 @@ class AllRecipes(AbstractScraper):
                 sum += (i+1) * count
                 total_count += count
 
-            return float(sum / total_count) if total_count > 0 else 0
+            rating = dict()
+            rating['value'] = float(sum / total_count) if total_count > 0 else 0
+            rating['count'] = total_count
+            return rating
 
         except:
             return None

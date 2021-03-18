@@ -33,7 +33,7 @@ class AbstractScraper:
     def image_url(self) -> Optional[str]:
         raise NotImplementedError("This should be implemented.")
 
-    def nutrients(self) -> Optional[Dict[str, Any]]:
+    def nutrients(self) -> Optional[Dict[str, str]]:
         raise NotImplementedError("This should be implemented.")
 
     def ingredients(self) -> Optional[List[str]]:
@@ -42,7 +42,7 @@ class AbstractScraper:
     def instructions(self) -> Optional[List[str]]:
         raise NotImplementedError("This should be implemented.")
         
-    def rating(self) -> Optional[float]:
+    def rating(self) -> Optional[Dict[str, Any]]:
         raise NotImplementedError("This should be implemented.")
 
     def site_name(self) -> Optional[str]:
