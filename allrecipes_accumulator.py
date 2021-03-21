@@ -57,7 +57,10 @@ def scrape(url, tag):
         title = ascii_forcer(scraper.title())
 
     image_url = scraper.image_url()
-    image_b64 = img_url2b64(image_url)
+    try:
+        image_b64 = img_url2b64(image_url)
+    except:
+        image_b64 = None
 
     nutrients = scraper.nutrients()
     if nutrients:
