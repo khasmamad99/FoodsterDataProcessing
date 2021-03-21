@@ -45,6 +45,10 @@ def read_tsv(tsv_path: Path):
                     for i in range(2*len(ws)-1):
                         labels.append(label)
                 else:
+                    if word == '-LRB-':
+                        word = '('
+                    elif word == '-RRB-':
+                        word = ')'
                     words.append(word)
                     labels.append(label)
                 
