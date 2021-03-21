@@ -8,15 +8,15 @@ class Content(BaseModel):
     unit: Optional[str]
 
 class Nutrients(BaseModel):
-    calories: Content
-    protein: Content
-    carbs: Content
-    fat: Content
-    fiber: Optional[Content] = None
-    cholestrol: Optional[Content] = None
-    saturatedFat: Optional[Content] = None
-    sodium: Optional[Content] = None
-    sugar: Optional[Content] = None
-    transFat: Optional[Content] = None
-    unsaturatedFat: Optional[Content] = None
+    calories: Content = None
+    proteinContent: Content = None
+    carbohydrateContent: Content = None
+    fatContent: Content = None
+    fiberContent: Optional[Content] = None
+    cholestrolContent: Optional[Content] = None
+    saturatedFatContent: Optional[Content] = None
+    sodiumContent: Optional[Content] = None
+    sugarContent: Optional[Content] = None
+    transFatContent: Optional[Content] = None
+    unsaturatedFatContent: Optional[Content] = None
 

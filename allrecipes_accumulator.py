@@ -11,7 +11,7 @@ from scrape.allrecipes import AllRecipes
 from scripts.utils import *
 
 from models.ingredient import Ingredient
-from models.nutrient import Nutrients
+from models.nutrient import Nutrients, Content
 from models.rating import Rating
 from models.recipe import Recipe
 from models.entity import Entity
@@ -61,6 +61,20 @@ def scrape(url, tag):
 
     nutrients = scraper.nutrients()
     if nutrients:
+        try:
+            nutrients.pop('@type')
+            nutrients.pop('servingSize')
+        except:
+            pass
+        rgx = re.compile('(\d+(?:\.\d+)?) ([a-zA-Z]+)?')
+        for key, item in nutrients.items():
+            try:
+                matches = rgx.findall(item)[0]
+                quantity, unit = matches
+                content = Content(unit=unit, quantity=quantity)
+                nutrients[key] = content
+            except:
+                continue
         nutrients = Nutrients(**nutrients)
 
     ingredients = scraper.ingredients()
@@ -96,6 +110,8 @@ def scrape(url, tag):
     if rating:
         rating = Rating(**rating)
 
+    tags = scraper.tags()
+    cuisines = scraper.cuisines()
     
     return Recipe(
         id = str(uuid.uuid4()),
@@ -111,7 +127,9 @@ def scrape(url, tag):
         ingredients = ingredients,
         nutrients = nutrients,
         instructions = instructions,
-        rating = rating
+        rating = rating,
+        tags = tags,
+        cuisines = cuisines
     )   
 
 

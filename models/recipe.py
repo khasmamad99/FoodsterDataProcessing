@@ -21,4 +21,6 @@ class Recipe(BaseModel):
     nutrients: Optional[Nutrients]
     instructions: Optional[List[str]]
     rating: Optional[Dict[str, Any]]
+    tags: Optional[List[str]]
+    cuisines: Optional[List[str]]
 

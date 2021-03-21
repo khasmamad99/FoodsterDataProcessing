@@ -2,12 +2,17 @@ from typing import Optional, Dict, Any, List
 
 import requests
 from bs4 import BeautifulSoup
+import extruct
 
 
 class AbstractScraper:
 
     def __init__(self, url):
         page_data = requests.get(url).content
+        try:
+            self.schema = extruct.extract(page_data)['json-ld'][1]
+        except:
+            self.schema = None
         self.soup = BeautifulSoup(page_data, "html5lib")
         self.url = url
 
@@ -45,8 +50,13 @@ class AbstractScraper:
     def rating(self) -> Optional[Dict[str, Any]]:
         raise NotImplementedError("This should be implemented.")
 
+    def tags(self) -> Optional[List[str]]:
+        raise NotImplementedError("This should be implemented.")
+
+    def cuisines(self) -> Optional[List[str]]:
+        raise NotImplementedError("This should be implemented.")
+
     def site_name(self) -> Optional[str]:
         meta = self.soup.find("meta", property="og:site_name")
         return meta.get('content') if meta else None
-
     

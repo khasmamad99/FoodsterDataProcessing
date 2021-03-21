@@ -51,28 +51,24 @@ class AllRecipes(AbstractScraper):
 
     def nutrients(self):
         try:
-            container = self.soup.find(
-                'div', {'class' : 'partial recipe-nutrition-section'}
-            ).find('div', {'class' : 'section-body'})
+            if self.schema:
+                nutrients = self.schema.get('nutrition')
+                return nutrients
+            else:
+                container = self.soup.find(
+                    'div', {'class' : 'partial recipe-nutrition-section'}
+                ).find('div', {'class' : 'section-body'})
 
-            nutrients = container.text.replace('Full Nutrition', '') \
-                                 .strip()[:-1].split(';')[:4]
+                nutrients = container.text.replace('Full Nutrition', '') \
+                                    .strip()[:-1].split(';')[:4]
 
-            nutr_dict = dict()
-            rgx = re.compile('(\d+(?:\.\d+)?)([a-zA-Z]+)?')
-            for i, nutr_name in enumerate(['calories', 'protein', 'carbs', 'fat']):
-                content = dict()
-                content['unit'] = None
-                matches = rgx.findall(nutrients[i])[0]
-                if len(matches) > 1:
-                    quantity, unit = matches
-                    content['unit'] = unit
-                else:
-                    quantity = matches[0]
-                content['quantity'] = quantity
-                nutr_dict[nutr_name] = content
+                nutr_dict = dict()
+                for i, nutr_name in enumerate([
+                    'calories', 'proteinContent', 'carbohydrateContent', 'fatContent'
+                ]):
+                    nutr_dict[nutr_name] = nutrients[i]
 
-            return nutr_dict
+                return nutr_dict
 
         except:
             return None
@@ -131,6 +127,20 @@ class AllRecipes(AbstractScraper):
             return rating
 
         except:
+            return None
+
+    
+    def tags(self):
+        if self.schema:
+            return self.schema.get('recipeCategory')
+        else:
+            return None
+
+    
+    def cuisines(self):
+        if self.schema:
+            return self.schema.get('recipeCuisine')
+        else:
             return None
 
            
