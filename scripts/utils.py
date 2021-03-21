@@ -45,7 +45,7 @@ def fraction_tamer(text):
     new_text = ''
     for c in text:
         if (c.encode() == b'\xe2\x80\x89'):
-            new_text += c
+            new_text += ' '
             continue
         try:
             name = unicodedata.name(c)
