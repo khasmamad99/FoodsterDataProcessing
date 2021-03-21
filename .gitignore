@@ -1,5 +1,8 @@
 # test jsons
-*test.json
+*test*.json
+
+# scraped data
+assets/data/*json
 
 # ner models
 assets/ner_models
