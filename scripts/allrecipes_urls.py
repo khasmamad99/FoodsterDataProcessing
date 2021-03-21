@@ -44,7 +44,7 @@ def generate_urls(
     
     print("Gathered:")
     for key, item in output.items():
-        print(f"{cat} : {len(item)} links")
+        print(f"{key} : {len(item)} links")
 
     srsly.write_json(output_path, output)
     print("Output saved to:", output_path)
