@@ -1197,7 +1197,7 @@ white	NAME
 vinegar	NAME
 	
 6	QUANTITY
-whole	UNIT
+whole	O
 cloves	NAME
 	
 2	QUANTITY
@@ -1896,7 +1896,7 @@ sauce	NAME
 1	QUANTITY
 point	O
 from	O
-whole	UNIT
+whole	O
 smoked	STATE
 brisket	NAME
 ,	O
@@ -3074,7 +3074,7 @@ oats	NAME
 	
 5	QUANTITY
 tablespoons	UNIT
-double	STATE
+double	O
 concentrated	STATE
 tomato	NAME
 paste	NAME

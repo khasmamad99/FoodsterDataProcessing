@@ -380,7 +380,7 @@ sugar	NAME
 1/2	QUANTITY
 cup	UNIT
 chopped	STATE
-pecans	STATE
+pecans	NAME
 	
 1/2	QUANTITY
 cup	UNIT
@@ -1321,7 +1321,7 @@ corn	NAME
 	
 34	QUANTITY
 large	SIZE
-whole	UNIT
+whole	O
 beet	NAME
 green	NAME
 leaves	NAME
@@ -1482,7 +1482,7 @@ to	O
 taste	O
 	
 5	QUANTITY
-whole	UNIT
+whole	O
 black	NAME
 peppercorns	NAME
 	
@@ -2697,7 +2697,7 @@ and	O
 diced	STATE
 	
 1	QUANTITY
-whole	UNIT
+whole	O
 chicken	NAME
 	
 2	QUANTITY
@@ -3597,7 +3597,7 @@ kosher	NAME
 salt	NAME
 	
 15	QUANTITY
-whole	UNIT
+whole	O
 black	NAME
 peppercorns	NAME
 	
@@ -3824,7 +3824,7 @@ oregano	NAME
 	
 2 1/2	QUANTITY
 cups	UNIT
-regular	UNIT
+regular	O
 rolled	NAME
 oats	NAME
 	
@@ -4215,7 +4215,7 @@ onion	NAME
 ounce	UNIT
 -RRB-	O
 can	UNIT
-whole	UNIT
+whole	O
 kernel	NAME
 corn	NAME
 ,	O
@@ -4521,7 +4521,7 @@ flakes	NAME
 2.5	QUANTITY
 pound	UNIT
 -RRB-	O
-whole	UNIT
+whole	O
 chicken	NAME
 ,	O
 cut	STATE
@@ -5266,7 +5266,7 @@ mozzarella	NAME
 cheese	NAME
 	
 6	QUANTITY
-whole	UNIT
+whole	O
 white	NAME
 peppercorns	NAME
 	
@@ -5647,7 +5647,7 @@ sugar	NAME
 ounce	UNIT
 -RRB-	O
 can	UNIT
-whole	UNIT
+whole	O
 tomatoes	NAME
 ,	O
 chopped	STATE
@@ -6451,7 +6451,7 @@ vinegar	NAME
 	
 1 1/2	QUANTITY
 cups	UNIT
-whole	UNIT
+whole	O
 wheat	NAME
 flour	NAME
 	
@@ -6498,7 +6498,7 @@ chopped	STATE
 	
 3	QUANTITY
 slices	UNIT
-whole	UNIT
+whole	O
 wheat	NAME
 bread	NAME
 	
@@ -7578,7 +7578,7 @@ minced	STATE
 5	QUANTITY
 cups	UNIT
 cubed	STATE
-whole	UNIT
+whole	O
 wheat	NAME
 bread	NAME
 	
@@ -7728,7 +7728,7 @@ cumin	NAME
 ounce	UNIT
 -RRB-	O
 can	UNIT
-whole	UNIT
+whole	O
 tomatoes	NAME
 with	O
 juice	NAME
@@ -8591,7 +8591,7 @@ salt	NAME
 6	QUANTITY
 inch	UNIT
 -RRB-	O
-whole	UNIT
+whole	O
 wheat	NAME
 pita	NAME
 breads	NAME
@@ -9402,7 +9402,7 @@ molasses	NAME
 ounce	UNIT
 -RRB-	O
 cans	UNIT
-whole	UNIT
+whole	O
 kernel	NAME
 corn	NAME
 ,	O
@@ -9484,7 +9484,7 @@ milk	NAME
 	
 1 2/3	QUANTITY
 cups	UNIT
-whole	UNIT
+whole	O
 wheat	NAME
 flour	NAME
 	
