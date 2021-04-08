@@ -132,14 +132,16 @@ class AllRecipes(AbstractScraper):
     
     def tags(self):
         if self.schema:
-            return self.schema.get('recipeCategory')
+            tags = self.schema.get('recipeCategory')
+            return tags if len(tags) > 0 else None
         else:
             return None
 
     
     def cuisines(self):
         if self.schema:
-            return self.schema.get('recipeCuisine')
+            cuisines = self.schema.get('recipeCuisine')
+            return cuisines if len(cuisines) > 0 else None
         else:
             return None
 
