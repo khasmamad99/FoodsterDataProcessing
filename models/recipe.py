@@ -8,9 +8,9 @@ from .rating import Rating
 
 class Recipe(BaseModel):
     id: Optional[str]
+    url: Optional[str]
     title: Optional[str]
     siteName:Optional[str]
-    tag: Optional[str]
     imageUrl: Optional[str]
     imageB64: Optional[str]
     totalTime: Optional[int]
