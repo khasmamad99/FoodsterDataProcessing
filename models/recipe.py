@@ -11,6 +11,7 @@ class Recipe(BaseModel):
     url: Optional[str]
     title: Optional[str]
     siteName:Optional[str]
+    category: Optional[str]
     imageUrl: Optional[str]
     imageB64: Optional[str]
     totalTime: Optional[int]
