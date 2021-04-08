@@ -36,9 +36,9 @@ def accumulate(
     data = []
 
     urls_dict = srsly.read_json(urls_json_path)
-    for tag, urls in urls_dict.items():
+    for cat, urls in urls_dict.items():
         for url in tqdm(urls[:recipe_count_per_cat]):
-            result = pool.apply_async(scrape, (url, tag))
+            result = pool.apply_async(scrape, (url, cat))
             return_val = result.get()
             if return_val:
                 data.append(return_val.dict())
@@ -48,7 +48,7 @@ def accumulate(
     
 
 
-def scrape(url, tag):
+def scrape(url, cat):
     global ner_model
 
     scraper = AllRecipes(url)
@@ -101,7 +101,7 @@ def scrape(url, tag):
         id = str(uuid.uuid4()),
         title = title,
         siteName = scraper.site_name(),
-        tag = tag,
+        category = cat,
         imageUrl = image_url,
         imageB64 = image_b64,
         totalTime = scraper.total_time(),

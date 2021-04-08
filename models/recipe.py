@@ -10,7 +10,7 @@ class Recipe(BaseModel):
     id: Optional[str]
     title: Optional[str]
     siteName:Optional[str]
-    tag: Optional[str]
+    category: Optional[str]
     imageUrl: Optional[str]
     imageB64: Optional[str]
     totalTime: Optional[int]
