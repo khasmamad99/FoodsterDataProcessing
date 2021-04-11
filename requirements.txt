@@ -1,0 +1,13 @@
+requests==2.25.1
+numpy==1.20.1
+opencv_python==4.5.1.48
+scikit_image==0.18.1
+extruct==0.12.0
+nltk==3.5
+tqdm==4.59.0
+srsly==2.4.0
+pydantic==1.7.3
+beautifulsoup4==4.9.3
+Pillow==8.2.0
+skimage==0.0
+typer==0.3.2
