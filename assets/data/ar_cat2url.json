@@ -1,0 +1,14 @@
+{
+    "78/breakfast-and-brunch/" : "breakfast",
+    "17561/lunch/" : "lunch",
+    "17562/dinner/" : "dinner",
+    "76/appetizers-and-snacks/" : "snack",
+    "80/main-dish/" : "main_dish",
+    "96/salad/" : "salad",
+    "81/side-dish/" : "side_dish",
+    "1825/world-cuisine/middle-eastern/turkish/" : "turkish",
+    "87/everyday-cooking/vegetarian/" : "vegetarian",
+    "22959/healthy-recipes/keto-diet/" : "keto",
+    "16705/healthy-recipes/paleo-diet/" : "paleo",
+    "1227/everyday-cooking/vegan/" : "vegan"
+}

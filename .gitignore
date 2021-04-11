@@ -2,7 +2,7 @@
 *test*.json
 
 # scraped data
-assets/data/*json
+assets/data/*small.json
 
 # ner models
 assets/ner_models
