@@ -82,7 +82,6 @@ def replace_ratios(text):
     res = rgx.sub(
         lambda x: ratio2dec(x.group(0)), text
     )
-    
     return res
 
 
@@ -96,7 +95,7 @@ def ratio2dec(ratio):
         partial = parts[1]
     else:
         raise Exception("Something sinister with {}".format(ratio))
-
+    
     num, denum = [int(e) for e in partial.split('/')]
     dec = full + num / denum
     return "%.2f" % dec

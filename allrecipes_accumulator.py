@@ -1,5 +1,6 @@
 from multiprocessing.pool import ThreadPool as Pool
 import uuid
+import re
 
 from pathlib import Path
 import srsly
@@ -90,6 +91,10 @@ def scrape(url, cat):
                 label = ent.label_
                 start = ingredient.find(text)
                 end = start + len(text)
+
+                # convert fractions to decimal points
+                if label == "QUANTITY":
+                    text = replace_ratios(text)
 
                 entity_list.append(Entity(
                     text=text,
