@@ -127,6 +127,10 @@ def scrape(url, cat):
     if cuisines:
         cuisines = [ascii_forcer(c) for c in cuisines]
 
+    # skip if anything is missing
+    if None in [title, image_url, nutrients, ingredients, instructions, rating]:
+        return None
+
     return Recipe(
         # this fields are not going to be used anywhere
         # id=str(uuid.uuid4()),
