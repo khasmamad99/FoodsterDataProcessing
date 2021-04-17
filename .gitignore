@@ -4,6 +4,9 @@
 # scraped data
 assets/data/*small.json
 
+# pycharm
+.idea/
+
 # ner models
 assets/ner_models
 
