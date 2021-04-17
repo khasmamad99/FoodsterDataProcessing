@@ -4,5 +4,5 @@ from pydantic import BaseModel
 from .entity import Entity
 
 class Ingredient(BaseModel):
-    text: str
+    # text: str
     entities: Optional[List[Entity]] = None
