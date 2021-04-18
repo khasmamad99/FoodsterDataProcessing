@@ -33,10 +33,14 @@ def accumulate(
     ner_model = spacy.load(ner_model_path)
 
     data = []
+    seen_urls = set()
 
     urls_dict = srsly.read_json(urls_json_path)
     for cat, urls in urls_dict.items():
         for url in tqdm(urls[:recipe_count_per_cat]):
+            if url in seen_urls:
+                continue
+            seen_urls.add(url)
             result = pool.apply_async(scrape, (url, cat))
             return_val = result.get()
             if return_val:
