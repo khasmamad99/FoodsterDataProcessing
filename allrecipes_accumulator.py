@@ -86,22 +86,30 @@ def scrape(url, cat):
             ingredient = ascii_forcer(fraction_tamer(ingredient))
             doc = ner_model(ingredient)
             entity_list = list()
+            seen_name = False
             for ent in doc.ents:
                 text = ent.text
                 label = ent.label_
                 start = ingredient.find(text)
                 end = start + len(text)
 
+                # make sure that the NAME entity is there
+                if label == "NAME":
+                    seen_name = True
+
                 # convert fractions to decimal points
                 if label == "QUANTITY":
                     text = replace_ratios(text)
-
+                
                 entity_list.append(Entity(
                     text=text,
                     label=label,
                     # start=start,
                     # end=end
                 ))
+
+            if not seen_name:
+                return None
 
             if not len(entity_list) > 0: entity_list = None
             ingredients_list.append(Ingredient(
@@ -127,8 +135,10 @@ def scrape(url, cat):
     if cuisines:
         cuisines = [ascii_forcer(c) for c in cuisines]
 
+    prepTime, cookTime, servingSize = scraper.prep_time(), scraper.cook_time(), scraper.yields()
+
     # skip if anything is missing
-    if None in [title, image_url, nutrients, ingredients, instructions, rating]:
+    if None in [title, image_url, nutrients, ingredients, instructions, rating, prepTime, cookTime, servingSize]:
         return None
 
     return Recipe(
