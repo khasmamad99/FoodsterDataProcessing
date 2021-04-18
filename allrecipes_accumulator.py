@@ -117,7 +117,7 @@ def scrape(url, cat):
 
             if not len(entity_list) > 0: entity_list = None
             ingredients_list.append(Ingredient(
-                # text=ingredient,
+                description=ingredient,
                 entities=entity_list
             ))
 
