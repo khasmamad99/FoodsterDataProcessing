@@ -90,16 +90,20 @@ def scrape(url, cat):
             ingredient = ascii_forcer(fraction_tamer(ingredient))
             doc = ner_model(ingredient)
             entity_list = list()
-            seen_name = False
+            seen = {
+                "NAME" : 0,
+                "QUANTITY" : 0,
+                "UNIT" : 0
+            }
             for ent in doc.ents:
                 text = ent.text
                 label = ent.label_
                 start = ingredient.find(text)
                 end = start + len(text)
 
-                # make sure that the NAME entity is there
-                if label == "NAME":
-                    seen_name = True
+                # count encounters of entities in seen
+                if label in seen:
+                    seen[label] += 1
 
                 # convert fractions to decimal points
                 if label == "QUANTITY":
@@ -112,8 +116,12 @@ def scrape(url, cat):
                     # end=end
                 ))
 
-            if not seen_name:
-                return None
+            # make sure that there is exactly 1 NAME and at most 1 QUANTITY and UNIT
+            for label, count in seen.items():
+                if label == "NAME" and count != 1:
+                    return None
+                if count > 1:
+                    return None
 
             if not len(entity_list) > 0: entity_list = None
             ingredients_list.append(Ingredient(
