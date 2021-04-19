@@ -1,3 +1,9 @@
+"""
+This file is getting too long and compilacted. Consider scraping in the same
+way before Perman's edits and doing the edits with a different file.
+"""
+
+
 from multiprocessing.pool import ThreadPool as Pool
 import uuid
 import re
@@ -10,6 +16,7 @@ from tqdm import tqdm
 
 from scrape.allrecipes import AllRecipes
 from scripts.utils import *
+from scripts.scraping_pool import CustomScrapingPool
 
 from models.ingredient import Ingredient
 from models.nutrient import Nutrients, Content
@@ -85,9 +92,12 @@ def scrape(url, cat):
 
     ingredients = scraper.ingredients()
     ingredients_list = []
+    paranth_rgx = re.compile(r'[0-9]+ +\([^)]*\)')
     if ingredients:
         for ingredient in ingredients:
             ingredient = ascii_forcer(fraction_tamer(ingredient))
+
+            # remove parantheses before processing
             doc = ner_model(ingredient)
             entity_list = list()
             seen = {
@@ -117,11 +127,32 @@ def scrape(url, cat):
                 ))
 
             # make sure that there is exactly 1 NAME and at most 1 QUANTITY and UNIT
-            for label, count in seen.items():
-                if label == "NAME" and count != 1:
+            print(ingredient)
+            print(seen)
+            print()
+            if seen['QUANTITY'] > 2 or seen['UNIT'] > 2 or seen['NAME'] != 1:
+                return None
+            elif seen['UNIT'] == 2 and seen['QUANTITY'] == 2:
+                """Handle the cases such as '2 (3 ounce) cans of tomatoes'
+                   by multiplying the can number with can size to find the
+                   total size and using the total size as the quantity and
+                   the first unit (ounce) as the unit
+                """
+                # return None if the pattern like '2 (3 ounce)' is not in the text
+                if not paranth_rgx.search(ingredient):
                     return None
-                if count > 1:
-                    return None
+                # extract the units and quantities
+                units = [ent.text for ent in entity_list if ent.label == "UNIT"]
+                quants = [ent.text for ent in entity_list if ent.label == "QUANTITY"]
+                # merge the quants and use the first unit
+                quant = float(quants[0]) * float(quants[1])
+                unit = units[0]
+                # remove old units and quantities add the new ones
+                entity_list = [ent for ent in entity_list if ent.label != "UNIT" and ent.label != "QUANTITY"]
+                entity_list.append(Entity(text=str(quant), label="QUANTITY"))
+                entity_list.append(Entity(text=unit, label="UNIT"))
+            elif seen["UNIT"] > 1 or seen["QUANTITY"] > 1:
+                return None
 
             if not len(entity_list) > 0: entity_list = None
             ingredients_list.append(Ingredient(
