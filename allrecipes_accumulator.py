@@ -1,12 +1,17 @@
 """
+ATTENTION!!!
 This file is getting too long and compilacted. Consider scraping in the same
-way before Perman's edits and doing the edits with a different file.
+way before Perman's edits and doing the edits with a different script.
 """
 
 
-from multiprocessing.pool import ThreadPool as Pool
+from multiprocessing.pool import ThreadPool
+import multiprocessing
+import queue
 import uuid
 import re
+import requests
+import os
 
 from pathlib import Path
 import srsly
@@ -16,7 +21,6 @@ from tqdm import tqdm
 
 from scrape.allrecipes import AllRecipes
 from scripts.utils import *
-from scripts.scraping_pool import CustomScrapingPool
 
 from models.ingredient import Ingredient
 from models.nutrient import Nutrients, Content
@@ -25,42 +29,65 @@ from models.recipe import Recipe
 from models.entity import Entity
 
 ner_model = None
-
+queue = queue.Queue()
 
 def accumulate(
         urls_json_path: Path,
         output_json_path: Path,
         ner_model_path: Path,
-        recipe_count_per_cat: int
+        recipe_count_per_cat: int,
+        thread_count: int = 8
 ):
-    pool_size = 8
-    pool = Pool(pool_size)
+    thread_count = 8    
+    process_count = 4
+
+    t_pool = ThreadPool(thread_count)
+    # p_pool = multiprocessing.Pool(process_count)
+
+    output_name, ext = os.path.splitext(output_json_path)
 
     global ner_model
     ner_model = spacy.load(ner_model_path)
 
     data = []
-    seen_urls = set()
+    # seen_urls = set()
 
+    all_urls = []
     urls_dict = srsly.read_json(urls_json_path)
     for cat, urls in urls_dict.items():
-        for url in tqdm(urls[:recipe_count_per_cat]):
-            if url in seen_urls:
-                continue
-            seen_urls.add(url)
-            result = pool.apply_async(scrape, (url, cat))
-            return_val = result.get()
-            if return_val:
-                data.append(return_val.dict())
+        for url in urls[:recipe_count_per_cat]:
+            all_urls.append((url, cat))
 
+    t_pool.map_async(thread_func, all_urls)      
+    for i in tqdm(range(len(all_urls))):
+        page_data, url, cat = queue.get()
+        # if url in seen_urls:
+        #     continue
+        # seen_urls.add(url)
+        # return_val = p_pool.apply(scrape, (page_data, url, cat))
+        return_val = scrape(page_data, url, cat)
+        if return_val:
+            data.append(return_val.dict())
+            # Ram is filling up, store in pieces
+            if len(data) > 5:
+                srsly.write_json(output_name + "_{}.json".format(i), data)
+                del data
+                data = []
+
+    t_pool.close()
+    t_pool.join()
     srsly.write_json(output_json_path, data)
     print("Saved output to:", output_json_path)
 
 
-def scrape(url, cat):
-    global ner_model
+def thread_func(args):
+    url, cat = args
+    page_data = requests.get(url).content
+    queue.put((page_data, url, cat))
 
-    scraper = AllRecipes(url)
+def scrape(page_data, url, cat):
+    global ner_model
+    scraper = AllRecipes(url, page_data)
     title = scraper.title()
     if title:
         title = ascii_forcer(scraper.title())
@@ -127,9 +154,9 @@ def scrape(url, cat):
                 ))
 
             # make sure that there is exactly 1 NAME and at most 1 QUANTITY and UNIT
-            print(ingredient)
-            print(seen)
-            print()
+            # print(ingredient)
+            # print(seen)
+            # print()
             if seen['QUANTITY'] > 2 or seen['UNIT'] > 2 or seen['NAME'] != 1:
                 return None
             elif seen['UNIT'] == 2 and seen['QUANTITY'] == 2:
@@ -194,9 +221,9 @@ def scrape(url, cat):
         imageUrl=image_url,
         # imageB64=image_b64,
         # totalTime=scraper.total_time(),
-        prepTime=scraper.prep_time(),
-        cookTime=scraper.cook_time(),
-        servingSize=scraper.yields(),
+        prepTime=prepTime,
+        cookTime=cookTime,
+        servingSize=servingSize,
         ingredients=ingredients,
         nutrition=nutrients,
         instructions=instructions,

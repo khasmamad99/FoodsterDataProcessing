@@ -7,8 +7,9 @@ import extruct
 
 class AbstractScraper:
 
-    def __init__(self, url):
-        page_data = requests.get(url).content
+    def __init__(self, url, page_data=None):
+        if not page_data:
+            page_data = requests.get(url).content
         try:
             self.schema = extruct.extract(page_data)['json-ld'][1]
         except:
