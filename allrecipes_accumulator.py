@@ -68,11 +68,6 @@ def accumulate(
         return_val = scrape(page_data, url, cat)
         if return_val:
             data.append(return_val.dict())
-            # Ram is filling up, store in pieces
-            if len(data) > 5:
-                srsly.write_json(output_name + "_{}.json".format(i), data)
-                del data
-                data = []
 
     t_pool.close()
     t_pool.join()
