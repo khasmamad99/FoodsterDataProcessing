@@ -50,7 +50,7 @@ def accumulate(
     ner_model = spacy.load(ner_model_path)
 
     data = []
-    # seen_urls = set()
+    seen_urls = set()
 
     all_urls = []
     urls_dict = srsly.read_json(urls_json_path)
@@ -61,9 +61,9 @@ def accumulate(
     t_pool.map_async(thread_func, all_urls)      
     for i in tqdm(range(len(all_urls))):
         page_data, url, cat = queue.get()
-        # if url in seen_urls:
-        #     continue
-        # seen_urls.add(url)
+        if url in seen_urls:
+            continue
+        seen_urls.add(url)
         # return_val = p_pool.apply(scrape, (page_data, url, cat))
         return_val = scrape(page_data, url, cat)
         if return_val:
